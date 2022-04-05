@@ -41,10 +41,11 @@ dev_dependencies:
   flutter_lints: ^1.0.0
   flutter_native_splash: ^2.1.2+1
   icons_plus: ^1.0.2
+  google_fonts: ^2.3.1
 
 flutter_native_splash:
-  # image: assets/images/splash.png
   image: assets/images/splash_1.png
+  # image: assets/icons/ic_splash.png
   color: "#3A7FD5"
   android: true
   ios: true

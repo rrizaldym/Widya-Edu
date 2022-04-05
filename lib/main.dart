@@ -1,6 +1,8 @@
+import 'package:edspertidapp/view/home.dart';
 import 'package:flutter/material.dart';
 import 'package:edspertidapp/view/login.dart';
 import 'package:edspertidapp/view/register.dart';
+import 'package:edspertidapp/view/mapel/listmapel.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,10 +14,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      initialRoute: '/login',
+      routes: {
+        '/login': (context) => const Login(),
+        '/register': (context) => const Register(),
+        '/home': (context) => const Home(),
+        '/listmapel': (context) => const ListMapel(),
+      },
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: const Color(0xffE5E5E5),
+        appBarTheme: const AppBarTheme(color: Color(0xff3A7FD5)),
       ),
-      home: const Register(),
       // home: const Login(),
     );
   }
