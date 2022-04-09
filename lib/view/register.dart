@@ -41,7 +41,7 @@ class _RegisterState extends State<Register> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -137,6 +137,7 @@ class _RegisterState extends State<Register> {
               controller: _name,
               textInputAction: TextInputAction.done,
               keyboardType: TextInputType.name,
+              textCapitalization: TextCapitalization.words,
               decoration: InputDecoration(
                 suffixIcon: _name.text.isEmpty
                     ? Container(
@@ -318,6 +319,7 @@ class _RegisterState extends State<Register> {
               controller: _school,
               textInputAction: TextInputAction.done,
               keyboardType: TextInputType.text,
+              textCapitalization: TextCapitalization.words,
               decoration: InputDecoration(
                 suffixIcon: _school.text.isEmpty
                     ? Container(

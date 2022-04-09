@@ -51,38 +51,28 @@ class _LoginState extends State<Login> {
                         decoration: BoxDecoration(
                             // color: Colors.grey,
                             image: DecorationImage(image: _login)))),
-            SizedBox(
+            const SizedBox(
               height: 10,
-              child: Container(
-                  // color: Colors.red,
-                  ),
             ),
             Expanded(
                 flex: 2,
-                child: Container(
-                  // color: Colors.grey,
-                  child: Column(
-                    children: [
-                      Text.rich(
-                        const TextSpan(text: "Selamat Datang"),
+                child: Column(
+                  children: [
+                    Text.rich(
+                      const TextSpan(text: "Selamat Datang"),
+                      style: GoogleFonts.poppins(
+                          fontSize: 22, fontWeight: FontWeight.bold),
+                    ),
+                    Text.rich(
+                        const TextSpan(
+                            text:
+                                "Selamat Datang di Aplikasi Widya Edu\nAplikasi Latihan dan Konsultasi Soal"),
+                        textAlign: TextAlign.center,
                         style: GoogleFonts.poppins(
-                            fontSize: 22, fontWeight: FontWeight.bold),
-                      ),
-                      // Text.rich(
-                      //   const TextSpan(text: "Selamat Datang"),
-                      //   style: TextStyle(
-                      //       fontSize: 22, fontWeight: FontWeight.bold),
-                      // ),
-                      Text.rich(
-                          const TextSpan(
-                              text:
-                                  "Selamat Datang di Aplikasi Widya Edu\nAplikasi Latihan dan Konsultasi Soal"),
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.poppins(
-                            fontSize: 14,
-                          )),
-                    ],
-                  ),
+                          fontSize: 14,
+                          color: const Color(0xff6A7483),
+                        )),
+                  ],
                 )),
             Flexible(
                 flex: 2,
@@ -97,7 +87,7 @@ class _LoginState extends State<Login> {
                                   content: Text("Masuk dengan Google!")));
                         },
                         icon: BrandLogo(BrandLogos.google, size: 26),
-                        label: const Text("Masuk dengan Google",
+                        label: const Text("   Masuk dengan Google",
                             style: TextStyle(
                               fontSize: 17,
                               color: Colors.black,
@@ -120,7 +110,7 @@ class _LoginState extends State<Login> {
                         },
                         icon: BrandLogo(BrandLogos.apple,
                             color: Colors.white, size: 26),
-                        label: const Text("Masuk dengan Apple ID",
+                        label: const Text("   Masuk dengan Apple ID",
                             style: TextStyle(
                               fontSize: 17,
                             )),
