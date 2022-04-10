@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "879676851580",
+    "project_id": "widyaedu-a1cda",
+    "storage_bucket": "widyaedu-a1cda.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:879676851580:android:e5e893729cb69e5f1650f9",
+        "android_client_info": {
+          "package_name": "com.example.edspertidapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "879676851580-f6n18coq6uqog3p3271m0pt04pkb1rl5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVm1xQ2cyoZY74nCahJiFPcKn7IPCZgMA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "879676851580-f6n18coq6uqog3p3271m0pt04pkb1rl5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

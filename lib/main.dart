@@ -6,6 +6,7 @@ import 'package:edspertidapp/view/register.dart';
 import 'package:edspertidapp/view/mapel/listmapel.dart';
 
 void main() {
+  // WidgetsFlutterBinding.ensure
   runApp(const MyApp());
 }
 
