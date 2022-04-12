@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:edspertidapp/controller/state_provider.dart';
+import 'package:provider/provider.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -343,6 +345,19 @@ class _RegisterState extends State<Register> {
   Widget buildButton() => Center(
         child: ElevatedButton(
             onPressed: () {
+              context.read<StateProvider>().getProfile(_email.text, _name.text,
+                  selectedGender, _dropdownValue, _school.text);
+              print(
+                  "${Provider.of<StateProvider>(context, listen: false).email}");
+              print(
+                  "${Provider.of<StateProvider>(context, listen: false).name}");
+              print(
+                  "${Provider.of<StateProvider>(context, listen: false).gender}");
+              print(
+                  "${Provider.of<StateProvider>(context, listen: false).kelas}");
+              print(
+                  "${Provider.of<StateProvider>(context, listen: false).school}");
+
               Navigator.pushNamed(context, "/home");
               ScaffoldMessenger.of(context)
                   .showSnackBar(const SnackBar(content: Text("Daftar!")));

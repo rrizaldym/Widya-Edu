@@ -12,7 +12,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   // potratit orientaion
-  // SystemChrome.setPreferredOrientations();
+  //? SystemChrome.setPreferredOrientations();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => StateProvider(),),
   ], child: const MyApp()));

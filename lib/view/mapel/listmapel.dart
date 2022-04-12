@@ -54,9 +54,8 @@ class _ListMapelState extends State<ListMapel> {
                     context,
                     "/paketsoal",
                   );
-                  // Still development
-                  // Tried to listen to a value exposed with provider, from outside of the widget tree.
-                  // print("${context.watch<StateProvider>().index}");
+                  print(
+                      "${Provider.of<StateProvider>(context, listen: false).index}");
                 }()
               : print(i);
         },

@@ -130,7 +130,8 @@ class _HomeState extends State<Home> {
               children: [
                 Text.rich(TextSpan(children: [
                   TextSpan(
-                      text: "Hai, Altop",
+                      text:
+                          "Hai, ${Provider.of<StateProvider>(context, listen: false).name}",
                       style: GoogleFonts.poppins(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -141,7 +142,6 @@ class _HomeState extends State<Home> {
                         fontSize: 12,
                       )),
                 ])),
-                // Text("Hai, Altop \nSelamat Datang", style: ,),
               ],
             ),
             CircleAvatar(
@@ -237,13 +237,16 @@ class _HomeState extends State<Home> {
           i != null
               ? () {
                   context.read<StateProvider>().getIndex(i);
+                  //? Tried to listen to a value exposed with provider, from outside of the widget tree.
+                  //? To fix, write:
+                  //? Provider.of<StateProvider>(context, listen: false);
+                  // print("${context.watch<StateProvider>().index}");
+                  print(
+                      "${Provider.of<StateProvider>(context, listen: false).index}");
                   Navigator.pushNamed(
                     context,
                     "/paketsoal",
                   );
-                  // Still development
-                  // Tried to listen to a value exposed with provider, from outside of the widget tree.
-                  // print("${context.watch<StateProvider>().index}");
                 }()
               : print(i);
         },
