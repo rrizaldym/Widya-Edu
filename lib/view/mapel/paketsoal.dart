@@ -1,10 +1,12 @@
+import 'package:edspertidapp/controller/state_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PaketSoal extends StatefulWidget {
-  final int? value;
-
-  const PaketSoal({Key? key, this.value}) : super(key: key);
+  const PaketSoal({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<PaketSoal> createState() => _PaketSoalState();
@@ -12,15 +14,7 @@ class PaketSoal extends StatefulWidget {
 
 class _PaketSoalState extends State<PaketSoal> {
   late int value;
-  // _PaketSoalState({required this.value});
   final isLoading = true;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    print(value);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +58,8 @@ class _PaketSoalState extends State<PaketSoal> {
               child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   // child: widget.value == null || (widget.value! + 1) % 2 == 0
-                  child: !isLoading
+                  child: (context.watch<StateProvider>().index + 1) % 2 == 0
+                      // child: !isLoading
                       ? buildError()
                       : GridView.builder(
                           gridDelegate:
@@ -132,8 +127,7 @@ class _PaketSoalState extends State<PaketSoal> {
         ),
       );
 
-  Widget buildError() => Expanded(
-          child: Column(
+  Widget buildError() => Column(
         children: [
           Flexible(
               flex: 2,
@@ -166,5 +160,5 @@ class _PaketSoalState extends State<PaketSoal> {
             ),
           ),
         ],
-      ));
+      );
 }

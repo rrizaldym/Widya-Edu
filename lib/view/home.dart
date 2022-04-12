@@ -1,3 +1,5 @@
+import 'package:edspertidapp/controller/state_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -230,16 +232,20 @@ class _HomeState extends State<Home> {
         ),
       );
 
-  Widget buildCard(int index) => GestureDetector(
+  Widget buildCard(int? i) => GestureDetector(
         onTap: () {
-          Navigator.pushNamed(
-            context,
-            "/paketsoal",
-          );
-          // arguments: {'value': index});
-          print(index);
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text("Kimia!"), duration: Duration(seconds: 1)));
+          i != null
+              ? () {
+                  context.read<StateProvider>().getIndex(i);
+                  Navigator.pushNamed(
+                    context,
+                    "/paketsoal",
+                  );
+                  // Still development
+                  // Tried to listen to a value exposed with provider, from outside of the widget tree.
+                  // print("${context.watch<StateProvider>().index}");
+                }()
+              : print(i);
         },
         child: Container(
           height: 100,

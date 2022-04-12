@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -10,20 +12,26 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final ImageProvider _login = const AssetImage("assets/images/img_login.png");
-  // late Image _login;
+  final ImageProvider _imgLogin =
+      const AssetImage("assets/images/img_login.png");
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _login = Image.asset("assets/images/img_login.png");
-  // }
+  Future<UserCredential> signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   precacheImage(_login.image, context);
-  // }
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,12 +53,9 @@ class _LoginState extends State<Login> {
           children: [
             Flexible(
                 flex: 3,
-                child:
-                    // _login),
-                    Container(
-                        decoration: BoxDecoration(
-                            // color: Colors.grey,
-                            image: DecorationImage(image: _login)))),
+                child: Container(
+                    decoration: BoxDecoration(
+                        image: DecorationImage(image: _imgLogin)))),
             const SizedBox(
               height: 10,
             ),
@@ -80,11 +85,16 @@ class _LoginState extends State<Login> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ElevatedButton.icon(
-                        onPressed: () {
-                          Navigator.pushNamed(context, "/register");
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text("Masuk dengan Google!")));
+                        onPressed: () async {
+                          await signInWithGoogle();
+                          final user = FirebaseAuth.instance.currentUser;
+                          user != null
+                              ? Navigator.pushNamed(context, "/register")
+                              : ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                  content: Text("User tdak diteukan!"),
+                                  duration: Duration(seconds: 2),
+                                ));
                         },
                         icon: BrandLogo(BrandLogos.google, size: 26),
                         label: const Text("   Masuk dengan Google",
@@ -104,6 +114,7 @@ class _LoginState extends State<Login> {
                         )),
                     ElevatedButton.icon(
                         onPressed: () {
+                          Navigator.pushNamed(context, "/register");
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                   content: Text("Masuk dengan Apple ID!")));
