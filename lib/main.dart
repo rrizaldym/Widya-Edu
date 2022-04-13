@@ -1,10 +1,11 @@
 import 'package:edspertidapp/controller/state_provider.dart';
 import 'package:edspertidapp/view/home.dart';
 import 'package:edspertidapp/view/mapel/paketsoal.dart';
+import 'package:edspertidapp/view/profile/profile.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:edspertidapp/view/login.dart';
-import 'package:edspertidapp/view/register.dart';
+import 'package:edspertidapp/auth/login.dart';
+import 'package:edspertidapp/auth/register.dart';
 import 'package:edspertidapp/view/mapel/listmapel.dart';
 import 'package:provider/provider.dart';
 
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const Login(),
         '/register': (context) => const Register(),
         '/home': (context) => const Home(),
+        '/profile': (context) => const Profile(),
         '/listmapel': (context) => const ListMapel(),
         '/paketsoal': (context) => const PaketSoal(),
       },

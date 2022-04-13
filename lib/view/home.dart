@@ -31,7 +31,7 @@ class _HomeState extends State<Home> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        tooltip: "Diskusi Soal",
+        // tooltip: "Diskusi Soal",
         elevation: 10,
         child: Container(
           // color: Colors.red,
@@ -50,10 +50,9 @@ class _HomeState extends State<Home> {
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
         child: Container(
-          height: MediaQuery.of(context).size.height * 0.1,
+          height: MediaQuery.of(context).size.height * 0.08,
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-            // color: Colors.grey,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -61,53 +60,86 @@ class _HomeState extends State<Home> {
             children: <Widget>[
               Column(
                 children: [
-                  IconButton(
-                    icon: Image.asset(
-                      "assets/icons/ic_home.png",
-                      scale: 2,
+                  Flexible(
+                    flex: 2,
+                    child: IconButton(
+                      icon: Image.asset(
+                        "assets/icons/ic_home.png",
+                        scale: 2,
+                      ),
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context,
+                          "/home",
+                        );
+                      },
                     ),
-                    onPressed: () {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(const SnackBar(content: Text("Home!")));
-                    },
                   ),
-                  Text("Home",
-                      style: GoogleFonts.poppins(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                      )),
+                  Flexible(
+                    flex: 1,
+                    child: Text("Home",
+                        style: GoogleFonts.poppins(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                        )),
+                  ),
                 ],
               ),
-              const SizedBox(
-                width: 10,
-              ),
-              // const SizedBox(
-              //   width: 100,
-              //   child: Center(
-              //     child: Text(
-              //       "Diskusi Soal",
-              //       textAlign: TextAlign.center,
-              //     ),
-              //   ),
-              // ),
               Column(
                 children: [
-                  IconButton(
-                    icon: const Icon(
-                      // Icons.account_circle_outlined,
-                      Icons.account_circle_rounded,
-                      color: Color(0xff9BBCBC),
+                  Flexible(
+                    flex: 2,
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.chat,
+                        color: Colors.transparent,
+                      ),
+                      // icon: Image.asset(
+                      //   "assets/icons/ic_discuss.png",
+                      //   colorBlendMode: BlendMode.modulate,
+                      //   scale: 2,
+                      // ),
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("Diskusi Soal!")));
+                      },
                     ),
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("Profile!")));
-                    },
                   ),
-                  Text("Profile",
-                      style: GoogleFonts.poppins(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                      )),
+                  Flexible(
+                    flex: 1,
+                    child: Text("Diskusi Soal",
+                        style: GoogleFonts.poppins(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                        )),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  Flexible(
+                    flex: 2,
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.person,
+                        color: Color(0xff9BBCBC),
+                      ),
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context,
+                          "/profile",
+                        );
+                      },
+                    ),
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: Text("Profile",
+                        style: GoogleFonts.poppins(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                        )),
+                  ),
                 ],
               ),
             ],

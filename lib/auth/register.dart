@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:edspertidapp/controller/state_provider.dart';
@@ -45,27 +47,26 @@ class _RegisterState extends State<Register> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               buildEmail(),
               const SizedBox(
-                height: 20,
+                height: 10,
               ),
               buildName(),
               const SizedBox(
-                height: 20,
+                height: 10,
               ),
               buildGender(),
               const SizedBox(
-                height: 20,
+                height: 10,
               ),
               buildClass(),
               const SizedBox(
-                height: 20,
+                height: 10,
               ),
               buildSchool(),
               const SizedBox(
-                height: 20,
+                height: 30,
               ),
               buildButton(),
             ],
@@ -189,10 +190,6 @@ class _RegisterState extends State<Register> {
                                     isButtonActive1 = !isButtonActive1;
                                   }();
                             selectedGender = 'Laki-laki';
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text("$selectedGender"),
-                              duration: const Duration(seconds: 1),
-                            ));
                           });
                         }
                       : null,
@@ -200,7 +197,7 @@ class _RegisterState extends State<Register> {
                       style: GoogleFonts.poppins(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
-                        color: Colors.black,
+                        color: isButtonActive1 ? Colors.black : Colors.white,
                       )),
                   style: ElevatedButton.styleFrom(
                     fixedSize:
@@ -222,10 +219,6 @@ class _RegisterState extends State<Register> {
                                     isButtonActive2 = !isButtonActive2;
                                   }();
                             selectedGender = 'Perempuan';
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text("$selectedGender"),
-                              duration: const Duration(seconds: 1),
-                            ));
                           });
                         }
                       : null,
@@ -233,7 +226,7 @@ class _RegisterState extends State<Register> {
                       style: GoogleFonts.poppins(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
-                        color: Colors.black,
+                        color: isButtonActive2 ? Colors.black : Colors.white,
                       )),
                   style: ElevatedButton.styleFrom(
                     fixedSize:
@@ -254,7 +247,7 @@ class _RegisterState extends State<Register> {
     "Kelas 11",
     "Kelas 12",
   ];
-  String? _dropdownValue = 'Kelas 10';
+  String? _dropdownValue;
   Widget buildClass() => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -276,11 +269,7 @@ class _RegisterState extends State<Register> {
               child: DropdownButtonHideUnderline(
                 child: DropdownButton(
                   icon: const Icon(Icons.keyboard_arrow_down),
-                  hint: Text("Pilih Kelas",
-                      style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      )),
+                  hint: const Text("pilih kelas"),
                   isExpanded: true,
                   onChanged: (String? value) {
                     setState(() {
@@ -344,35 +333,59 @@ class _RegisterState extends State<Register> {
 
   Widget buildButton() => Center(
         child: ElevatedButton(
-            onPressed: () {
-              context.read<StateProvider>().getProfile(_email.text, _name.text,
-                  selectedGender, _dropdownValue, _school.text);
-              print(
-                  "${Provider.of<StateProvider>(context, listen: false).email}");
-              print(
-                  "${Provider.of<StateProvider>(context, listen: false).name}");
-              print(
-                  "${Provider.of<StateProvider>(context, listen: false).gender}");
-              print(
-                  "${Provider.of<StateProvider>(context, listen: false).kelas}");
-              print(
-                  "${Provider.of<StateProvider>(context, listen: false).school}");
-
-              Navigator.pushNamed(context, "/home");
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(const SnackBar(content: Text("Daftar!")));
-            },
-            child: const Text("Daftar",
-                style: TextStyle(
-                  fontSize: 17,
-                )),
-            style: ElevatedButton.styleFrom(
-              fixedSize:
-                  Size.fromWidth(MediaQuery.of(context).size.width * 0.8),
-              padding: const EdgeInsets.all(15),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25)),
-              primary: const Color(0xff3A7FD5),
-            )),
+          child: const Text("Daftar",
+              style: TextStyle(
+                fontSize: 17,
+              )),
+          style: ElevatedButton.styleFrom(
+            fixedSize: Size.fromWidth(MediaQuery.of(context).size.width * 0.8),
+            padding: const EdgeInsets.all(15),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+            primary: const Color(0xff3A7FD5),
+          ),
+          onLongPress: () {
+            Navigator.pushNamed(context, "/home");
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("It's long pressed Login!")));
+          },
+          onPressed: () {
+            _email.text != null &&
+                    _name.text != null &&
+                    selectedGender != null &&
+                    _dropdownValue != null &&
+                    _school.text != null
+                ? () {
+                    context.read<StateProvider>().getProfile(
+                        _email.text,
+                        _name.text,
+                        selectedGender,
+                        _dropdownValue,
+                        _school.text);
+                    print(
+                        "${Provider.of<StateProvider>(context, listen: false).email}");
+                    print(
+                        "${Provider.of<StateProvider>(context, listen: false).name}");
+                    print(
+                        "${Provider.of<StateProvider>(context, listen: false).gender}");
+                    print(
+                        "${Provider.of<StateProvider>(context, listen: false).kelas}");
+                    print(
+                        "${Provider.of<StateProvider>(context, listen: false).school}");
+                    _email.clear();
+                    _name.clear();
+                    _school.clear();
+                    setState(() {
+                      _dropdownValue = null;
+                      selectedGender = null;
+                      isButtonActive1 = true;
+                      isButtonActive2 = true;
+                    });
+                    Navigator.pushNamed(context, "/home");
+                  }()
+                : ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Please fill the blank!")));
+          },
+        ),
       );
 }

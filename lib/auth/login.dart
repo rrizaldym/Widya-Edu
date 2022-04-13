@@ -84,55 +84,8 @@ class _LoginState extends State<Login> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ElevatedButton.icon(
-                        onPressed: () async {
-                          await signInWithGoogle();
-                          final user = FirebaseAuth.instance.currentUser;
-                          user != null
-                              ? Navigator.pushNamed(context, "/register")
-                              : ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                  content: Text("User tdak diteukan!"),
-                                  duration: Duration(seconds: 2),
-                                ));
-                        },
-                        icon: BrandLogo(BrandLogos.google, size: 26),
-                        label: const Text("   Masuk dengan Google",
-                            style: TextStyle(
-                              fontSize: 17,
-                              color: Colors.black,
-                            )),
-                        style: ElevatedButton.styleFrom(
-                          fixedSize: Size.fromWidth(
-                              MediaQuery.of(context).size.width * 0.8),
-                          side: const BorderSide(color: Color(0xff01B1AF)),
-                          padding: const EdgeInsets.all(15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                          primary: Colors.white,
-                        )),
-                    ElevatedButton.icon(
-                        onPressed: () {
-                          Navigator.pushNamed(context, "/register");
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text("Masuk dengan Apple ID!")));
-                        },
-                        icon: BrandLogo(BrandLogos.apple,
-                            color: Colors.white, size: 26),
-                        label: const Text("   Masuk dengan Apple ID",
-                            style: TextStyle(
-                              fontSize: 17,
-                            )),
-                        style: ElevatedButton.styleFrom(
-                          fixedSize: Size.fromWidth(
-                              MediaQuery.of(context).size.width * 0.8),
-                          padding: const EdgeInsets.all(15),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25)),
-                          primary: Colors.black,
-                        ))
+                    buildGoogleLogin(),
+                    buildAppleLogin(),
                   ],
                 )),
           ],
@@ -140,4 +93,49 @@ class _LoginState extends State<Login> {
       ),
     );
   }
+
+  Widget buildGoogleLogin() => ElevatedButton.icon(
+      onPressed: () async {
+        await signInWithGoogle();
+        final user = FirebaseAuth.instance.currentUser;
+        user != null
+            ? Navigator.pushNamed(context, "/register")
+            : ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text("User tdak diteukan!"),
+                duration: Duration(seconds: 2),
+              ));
+      },
+      icon: BrandLogo(BrandLogos.google, size: 26),
+      label: const Text("   Masuk dengan Google",
+          style: TextStyle(
+            fontSize: 17,
+            color: Colors.black,
+          )),
+      style: ElevatedButton.styleFrom(
+        fixedSize: Size.fromWidth(MediaQuery.of(context).size.width * 0.8),
+        side: const BorderSide(color: Color(0xff01B1AF)),
+        padding: const EdgeInsets.all(15),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25),
+        ),
+        primary: Colors.white,
+      ));
+
+  Widget buildAppleLogin() => ElevatedButton.icon(
+      onPressed: () {
+        Navigator.pushNamed(context, "/register");
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Masuk dengan Apple ID!")));
+      },
+      icon: BrandLogo(BrandLogos.apple, color: Colors.white, size: 26),
+      label: const Text("   Masuk dengan Apple ID",
+          style: TextStyle(
+            fontSize: 17,
+          )),
+      style: ElevatedButton.styleFrom(
+        fixedSize: Size.fromWidth(MediaQuery.of(context).size.width * 0.8),
+        padding: const EdgeInsets.all(15),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+        primary: Colors.black,
+      ));
 }

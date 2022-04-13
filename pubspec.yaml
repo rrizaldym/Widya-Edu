@@ -46,6 +46,7 @@ dev_dependencies:
   icons_plus: ^1.0.2
   google_fonts: ^2.3.1
   provider: ^6.0.2
+  lorem_ipsum: ^0.0.1
 
 flutter_native_splash:
   image: assets/images/splash_1.png
