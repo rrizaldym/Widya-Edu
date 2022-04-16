@@ -341,7 +341,7 @@ class _RegisterState extends State<Register> {
             primary: const Color(0xff3A7FD5),
           ),
           onLongPress: () {
-            Navigator.pushNamed(context, "/home");
+            Navigator.pushReplacementNamed(context, "/home");
             ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text("It's long pressed Login!")));
           },
@@ -377,7 +377,7 @@ class _RegisterState extends State<Register> {
                       isButtonActive1 = true;
                       isButtonActive2 = true;
                     });
-                    Navigator.pushNamed(context, "/home");
+                    Navigator.pushReplacementNamed(context, "/home");
                   }()
                 : ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text("Please fill the blank!")));

@@ -68,7 +68,7 @@ class _HomeState extends State<Home> {
                         scale: 2,
                       ),
                       onPressed: () {
-                        Navigator.pushNamed(
+                        Navigator.pushReplacementNamed(
                           context,
                           "/home",
                         );
@@ -125,7 +125,7 @@ class _HomeState extends State<Home> {
                         color: Color(0xff9BBCBC),
                       ),
                       onPressed: () {
-                        Navigator.pushNamed(
+                        Navigator.pushReplacementNamed(
                           context,
                           "/profile",
                         );
