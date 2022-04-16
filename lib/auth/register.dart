@@ -36,11 +36,7 @@ class _RegisterState extends State<Register> {
         elevation: 5,
         leading: BackButton(
           color: Colors.black,
-          onPressed: () {
-            Navigator.pop(context);
-            ScaffoldMessenger.of(context)
-                .showSnackBar(const SnackBar(content: Text("Clicked!")));
-          },
+          onPressed: () => Navigator.pop(context),
         ),
       ),
       body: SingleChildScrollView(

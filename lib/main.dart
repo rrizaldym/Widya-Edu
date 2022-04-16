@@ -2,6 +2,7 @@ import 'package:edspertidapp/controller/state_provider.dart';
 import 'package:edspertidapp/view/home.dart';
 import 'package:edspertidapp/view/mapel/paketsoal.dart';
 import 'package:edspertidapp/view/profile/profile.dart';
+import 'package:edspertidapp/view/profile/setting.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:edspertidapp/auth/login.dart';
@@ -15,7 +16,9 @@ Future<void> main() async {
   // potratit orientaion
   //? SystemChrome.setPreferredOrientations();
   runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (_) => StateProvider(),),
+    ChangeNotifierProvider(
+      create: (_) => StateProvider(),
+    ),
   ], child: const MyApp()));
 }
 
@@ -31,6 +34,7 @@ class MyApp extends StatelessWidget {
         '/register': (context) => const Register(),
         '/home': (context) => const Home(),
         '/profile': (context) => const Profile(),
+        '/settings': (context) => const Settings(),
         '/listmapel': (context) => const ListMapel(),
         '/paketsoal': (context) => const PaketSoal(),
       },

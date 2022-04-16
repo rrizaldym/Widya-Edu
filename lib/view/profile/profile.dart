@@ -30,6 +30,7 @@ class _ProfileState extends State<Profile> {
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text("To setting screen!")));
+                Navigator.pushNamed(context, '/settings');
               },
               child: Text('Edit',
                   style: GoogleFonts.poppins(
@@ -83,7 +84,7 @@ class _ProfileState extends State<Profile> {
                     child: IconButton(
                       icon: const Icon(
                         Icons.chat,
-                        color: Colors.transparent,
+                        color: Color(0xff9BBCBC),
                       ),
                       // icon: Image.asset(
                       //   "assets/icons/ic_discuss.png",
