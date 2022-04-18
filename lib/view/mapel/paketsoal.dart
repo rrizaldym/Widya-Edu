@@ -80,50 +80,56 @@ class _PaketSoalState extends State<PaketSoal> {
     );
   }
 
-  Widget buildCard(int index) => Container(
-        height: 100,
-        // width: 150,
-        width: MediaQuery.of(context).size.width * 0.4,
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Colors.white,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: 36,
-              height: 36,
-              decoration: BoxDecoration(
-                  color: const Color(0xffF3F7F8),
-                  // color: Colors.grey,
-                  borderRadius: BorderRadius.circular(10),
-                  image: const DecorationImage(
-                      scale: 4, image: AssetImage("assets/icons/ic_note.png"))),
-            ),
-            Text.rich(TextSpan(
-              children: [
-                TextSpan(
-                  text: "Trigonometri",
-                  style: GoogleFonts.poppins(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
+  Widget buildCard(int index) => GestureDetector(
+        onTap: () {
+          Navigator.pushNamed(context, "/latihansoal");
+        },
+        child: Container(
+          height: 100,
+          // width: 150,
+          width: MediaQuery.of(context).size.width * 0.4,
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.white,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                    color: const Color(0xffF3F7F8),
+                    // color: Colors.grey,
+                    borderRadius: BorderRadius.circular(10),
+                    image: const DecorationImage(
+                        scale: 4,
+                        image: AssetImage("assets/icons/ic_note.png"))),
+              ),
+              Text.rich(TextSpan(
+                children: [
+                  TextSpan(
+                    text: "Trigonometri",
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
                   ),
-                ),
-                TextSpan(
-                  text: "\n0/10 Soal",
-                  style: GoogleFonts.poppins(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: const Color(0xff8E8E8E),
+                  TextSpan(
+                    text: "\n0/10 Soal",
+                    style: GoogleFonts.poppins(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: const Color(0xff8E8E8E),
+                    ),
                   ),
-                ),
-              ],
-            )),
-          ],
+                ],
+              )),
+            ],
+          ),
         ),
       );
 

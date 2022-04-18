@@ -1,5 +1,6 @@
 import 'package:edspertidapp/controller/state_provider.dart';
 import 'package:edspertidapp/view/home.dart';
+import 'package:edspertidapp/view/latihansoal/latihansoal.dart';
 import 'package:edspertidapp/view/mapel/paketsoal.dart';
 import 'package:edspertidapp/view/profile/profile.dart';
 import 'package:edspertidapp/view/profile/setting.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
         '/settings': (context) => const Settings(),
         '/listmapel': (context) => const ListMapel(),
         '/paketsoal': (context) => const PaketSoal(),
+        '/latihansoal': (context) => const LatihanSoal(),
       },
       theme: ThemeData(
         scaffoldBackgroundColor: const Color(0xffE5E5E5),
