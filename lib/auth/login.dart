@@ -58,11 +58,25 @@ class _LoginState extends State<Login> {
         } else {
           Navigator.pushReplacementNamed(context, "/register");
         }
+      } else {
+        print("Terjadi kesalahan saat pengambilan data user");
+        setState(() {
+          isLoading = false;
+        });
+        // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        //   content: Text("Terjadi kesalahan saat pengambilan data user"),
+        //   duration: Duration(seconds: 2),
+        // ));
       }
     } else {
+      print("Gagal Masuk");
       setState(() {
         isLoading = false;
       });
+      // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      //   content: Text("Gagal Masuk"),
+      //   duration: Duration(seconds: 2),
+      // ));
     }
   }
 

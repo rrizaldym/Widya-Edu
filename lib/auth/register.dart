@@ -1,5 +1,7 @@
 // ignore_for_file: unnecessary_null_comparison
 
+import 'package:edspertidapp/repository/auth_api.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:edspertidapp/controller/state_provider.dart';
@@ -13,9 +15,19 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  final _email = TextEditingController();
+  final user = FirebaseAuth.instance.currentUser!.email;
+  // final _email = TextEditingController();
+  TextEditingController? _email;
   final _name = TextEditingController();
   final _school = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    if (user != null) {
+      _email = TextEditingController(text: user.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,13 +107,13 @@ class _RegisterState extends State<Register> {
               textInputAction: TextInputAction.done,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
-                suffixIcon: _email.text.isEmpty
+                suffixIcon: _email!.text.isEmpty
                     ? Container(
                         width: 0,
                       )
                     : IconButton(
                         onPressed: () {
-                          _email.clear();
+                          _email!.clear();
                         },
                         icon: const Icon(Icons.close)),
                 hintText: "email@domain.com",
@@ -346,37 +358,13 @@ class _RegisterState extends State<Register> {
                 const SnackBar(content: Text("It's long pressed Login!")));
           },
           onPressed: () {
-            _email.text != null &&
+            _email!.text != null &&
                     _name.text != null &&
                     selectedGender != null &&
                     _dropdownValue != null &&
                     _school.text != null
                 ? () {
-                    context.read<StateProvider>().getProfile(
-                        _email.text,
-                        _name.text,
-                        selectedGender,
-                        _dropdownValue,
-                        _school.text);
-                    print(
-                        "${Provider.of<StateProvider>(context, listen: false).email}");
-                    print(
-                        "${Provider.of<StateProvider>(context, listen: false).name}");
-                    print(
-                        "${Provider.of<StateProvider>(context, listen: false).gender}");
-                    print(
-                        "${Provider.of<StateProvider>(context, listen: false).kelas}");
-                    print(
-                        "${Provider.of<StateProvider>(context, listen: false).school}");
-                    _email.clear();
-                    _name.clear();
-                    _school.clear();
-                    setState(() {
-                      _dropdownValue = null;
-                      selectedGender = null;
-                      isButtonActive1 = true;
-                      isButtonActive2 = true;
-                    });
+                    registData();
                     Navigator.pushReplacementNamed(context, "/home");
                   }()
                 : ScaffoldMessenger.of(context).showSnackBar(
@@ -384,4 +372,47 @@ class _RegisterState extends State<Register> {
           },
         ),
       );
+
+  Future<void> registData() async {
+    final body = {
+      "user_name": _name.text,
+      "user_email": _email!.text,
+      "user_whatsapp": "082255550496",
+      "user_foto":
+          "https://api.widyaedu.com/assets/uploads/avatar/5a57317764486c77636d396d6157786c_emptyprofile.png",
+      "user_propinsi": "Prov. Aceh",
+      "user_kabupaten": "Kab. Aceh Barat",
+      "sosmed": "@widyaedu",
+      "user_prop_sekolah": "Prov. D.I. Yogyakarta",
+      "user_kab_sekolah": "Kab. Sleman",
+      "user_asal_sekolah": _school.text,
+      "kelas": "12",
+      "uniqcode": "7552",
+      "referral": "EDUEE2",
+      "date_create": "2022-02-24 08:28:55",
+      "jenjang": "SMA",
+      "user_gender": selectedGender,
+      "user_propinsi_id": "060000",
+      "user_prop_sekolah_id": "040000",
+      "user_kab_sekolah_id": "040200",
+      "user_token":
+          "cmZvRr5RRLuLGJX64T-Grb:APA91bF3DkBHPR3NtBqm_f12d9wNd-YvyjJmEkU7f4smY2d8ODJCvGBitC6LExh-GJ27qinvx0NGGkkppyiJIoxG_FDKOSdggLU-g5-W7eJeqzv5JrYUSg4U4xvXU0E_VuiP20gVEUSV",
+      "verified_phone": "true",
+      "user_status": "verified",
+      "apple_id": "empty"
+    };
+    // final result = await AuthAPi().postRegisterUser(body);
+    // print(result);
+    context.read<StateProvider>().getProfile(
+        _email!.text, _name.text, selectedGender, _dropdownValue, _school.text);
+    _email!.clear();
+    _name.clear();
+    _school.clear();
+    setState(() {
+      _dropdownValue = null;
+      selectedGender = null;
+      isButtonActive1 = true;
+      isButtonActive2 = true;
+    });
+  }
 }

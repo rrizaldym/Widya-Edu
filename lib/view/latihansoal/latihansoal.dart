@@ -14,30 +14,28 @@ class _LatihanSoalState extends State<LatihanSoal> {
       appBar: AppBar(
         title: const Text("Latihan Soal"),
       ),
-      body: Container(
-        child: Column(
-          children: [
-            TabBar(
-              tabs: List.generate(
+      body: Column(
+        children: [
+          TabBar(
+            tabs: List.generate(
+                // soal!.data!.length,
+                10,
+                (index) => Text(
+                      "${index + 1}",
+                      style: const TextStyle(color: Colors.black),
+                    )),
+          ),
+          Expanded(
+            child: TabBarView(
+              children: List.generate(
                   // soal!.data!.length,
                   10,
-                  (index) => Text(
-                        "${index + 1}",
-                        style: const TextStyle(color: Colors.black),
+                  (index) => Column(
+                        children: [Text("Soal no $index")],
                       )),
             ),
-            Expanded(
-              child: TabBarView(
-                children: List.generate(
-                    // soal!.data!.length,
-                    10,
-                    (index) => Column(
-                          children: [Text("Soal no $index")],
-                        )),
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
