@@ -122,7 +122,7 @@ class _LoginState extends State<Login> {
                           fontSize: 20,
                           fontWeight: FontWeight.bold)),
                 ),
-                backgroundColor: Colors.transparent,
+                backgroundColor: Color.fromARGB(0, 190, 171, 171),
                 elevation: 0,
               ),
               body: Center(

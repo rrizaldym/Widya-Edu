@@ -1,11 +1,35 @@
 import 'package:flutter/material.dart';
 
 class StateProvider extends ChangeNotifier {
-  int? _index;
-  int get index => _index!;
+  int? _courseId;
+  int get courseId => _courseId!;
 
-  void getIndex(context) {
-    _index = context;
+  void getCourseId(String context) {
+    _courseId = int.parse(context);
+    notifyListeners();
+  }
+
+  int? _courseContentId;
+  int get courseContentId => _courseContentId!;
+
+  void getCourseContentId(String context) {
+    _courseContentId = int.parse(context);
+    notifyListeners();
+  }
+
+  int? _subCourseContentId;
+  int get subCourseContentId => _subCourseContentId!;
+
+  void getSubCourseContentId(String context) {
+    _subCourseContentId = int.parse(context);
+    notifyListeners();
+  }
+
+  String? _courseName;
+  String get courseName => _courseName!;
+
+  void getCourseName(String context) {
+    _courseName = context;
     notifyListeners();
   }
 

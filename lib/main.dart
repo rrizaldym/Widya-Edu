@@ -1,6 +1,7 @@
 import 'package:edspertidapp/controller/state_provider.dart';
 import 'package:edspertidapp/view/home.dart';
 import 'package:edspertidapp/view/latihansoal/latihansoal.dart';
+import 'package:edspertidapp/view/mapel/paketlatsol.dart';
 import 'package:edspertidapp/view/mapel/paketsoal.dart';
 import 'package:edspertidapp/view/profile/profile.dart';
 import 'package:edspertidapp/view/profile/setting.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/login',
+      initialRoute: '/latihansoal',
       routes: {
         '/login': (context) => const Login(),
         '/register': (context) => const Register(),
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
         '/settings': (context) => const Settings(),
         '/listmapel': (context) => const ListMapel(),
         '/paketsoal': (context) => const PaketSoal(),
+        '/paketlatsol': (context) => const PaketLatihanSoal(),
         '/latihansoal': (context) => const LatihanSoal(),
       },
       theme: ThemeData(

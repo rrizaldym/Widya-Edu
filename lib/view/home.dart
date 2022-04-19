@@ -1,7 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:edspertidapp/controller/state_provider.dart';
+import 'package:edspertidapp/models/banner_list.dart';
+import 'package:edspertidapp/models/mata_pelajaran_list.dart';
+import 'package:edspertidapp/repository/latihan_soal_api.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../repository/banner_api.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -11,6 +17,40 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  MataPelajaranList? mapelList;
+  BannerList? bannerList;
+
+  @override
+  void initState() {
+    super.initState();
+    getMapel();
+    getBanner();
+  }
+
+  Future<void> getMapel() async {
+    final response =
+        await LatihanSoalApi().getMataPelajaran("alitopan@widyaedu.com", "IPS");
+    //? Data diambil dari Firebase
+    if (response != null) {
+      print(response);
+      mapelList = MataPelajaranList.fromJson(response);
+      setState(() {});
+    } else {
+      print("Terjadi kesalahan saat pengambilan data Mata Pelajaran!");
+    }
+  }
+
+  Future<void> getBanner() async {
+    final response = await BannerApi().getBanner();
+    if (response != null) {
+      print(response);
+      bannerList = BannerList.fromJson(response);
+      setState(() {});
+    } else {
+      print("Terjadi kesalahan saat pengambilan data Banner!");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,8 +62,8 @@ class _HomeState extends State<Home> {
               children: [
                 buildProfile(),
                 buildBanner(),
-                buildMapel(),
-                buildNews(),
+                buildMapel(mapelList),
+                buildNews(bannerList),
               ],
             ),
           ),
@@ -217,7 +257,7 @@ class _HomeState extends State<Home> {
         ),
       );
 
-  Widget buildMapel() => SizedBox(
+  Widget buildMapel(MataPelajaranList? list) => SizedBox(
         height: 400,
         child: Column(
           children: [
@@ -233,10 +273,10 @@ class _HomeState extends State<Home> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, "/listmapel");
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text("Lihat Semua!"),
-                        duration: Duration(seconds: 1)));
+                    Navigator.pushNamed(
+                      context,
+                      "/listmapel",
+                    );
                   },
                   child: Text(
                     "Lihat Semua",
@@ -250,37 +290,57 @@ class _HomeState extends State<Home> {
               ],
             ),
             Flexible(
-              child: ListView.separated(
-                  padding: const EdgeInsets.all(8),
-                  itemCount: 3,
-                  separatorBuilder: (context, index) {
-                    return const SizedBox(height: 20);
-                  },
-                  itemBuilder: (context, index) {
-                    return buildCard(index);
-                  }),
+              child: list == null
+                  ? const Center(child: CircularProgressIndicator())
+                  : ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: const EdgeInsets.all(8),
+                      // itemCount: list.data == null ? 0 : list.data!.length,
+                      itemCount: 3,
+                      separatorBuilder: (context, index) {
+                        return const SizedBox(height: 20);
+                      },
+                      itemBuilder: (BuildContext context, int index) {
+                        return buildCard(list: list, index: index
+                            // courseId: list.data![index].courseId,
+                            // title: list.data![index].courseName,
+                            // urlCover: list.data![index].urlCover,
+                            // done: list.data![index].jumlahDone,
+                            // jumlah: list.data![index].jumlahMateri,
+                            // progress: list.data![index].progress!.toDouble(),
+                            );
+                      }),
             ),
           ],
         ),
       );
 
-  Widget buildCard(int? i) => GestureDetector(
+  Widget buildCard({
+    required MataPelajaranList? list,
+    required int index,
+    // required String? courseId,
+    // required String? title,
+    // required String? urlCover,
+    // required int? done,
+    // required int? jumlah,
+    // required double? progress,
+  }) =>
+      GestureDetector(
         onTap: () {
-          i != null
+          list!.data![index].courseId != null
               ? () {
-                  context.read<StateProvider>().getIndex(i);
-                  //? Tried to listen to a value exposed with provider, from outside of the widget tree.
-                  //? To fix, write:
-                  //? Provider.of<StateProvider>(context, listen: false);
-                  // print("${context.watch<StateProvider>().index}");
-                  print(
-                      "${Provider.of<StateProvider>(context, listen: false).index}");
+                  context
+                      .read<StateProvider>()
+                      .getCourseId(list.data![index].courseId!);
                   Navigator.pushNamed(
                     context,
                     "/paketsoal",
                   );
+                  print(
+                      "${Provider.of<StateProvider>(context, listen: false).courseId}");
                 }()
-              : print(i);
+              : print(int.parse(list.data![index].courseId!));
         },
         child: Container(
           height: 100,
@@ -292,17 +352,30 @@ class _HomeState extends State<Home> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              // CachedNetworkImage(
+              //   imageUrl: list!.data![index].urlCover!,
+              //   imageBuilder: (context, imageProvider) => Container(
+              //     decoration: BoxDecoration(
+              //       image: DecorationImage(
+              //           image: imageProvider,
+              //           fit: BoxFit.cover,
+              //           colorFilter:
+              //               ColorFilter.mode(Colors.red, BlendMode.colorBurn)),
+              //     ),
+              //   ),
+              //   placeholder: (context, url) => CircularProgressIndicator(),
+              //   errorWidget: (context, url, error) => Icon(Icons.error),
+              // ),
               Container(
                 width: 60,
                 height: 60,
                 decoration: BoxDecoration(
-                    // agak pias warnanya masuk ke putih
                     color: const Color(0xffF3F7F8),
-                    // color: Colors.grey,
                     borderRadius: BorderRadius.circular(10),
-                    image: const DecorationImage(
-                        scale: 2,
-                        image: AssetImage("assets/icons/ic_kimia.png"))),
+                    image: DecorationImage(
+                        scale: 1.5,
+                        // image: AssetImage("assets/icons/ic_kimia.png"))),
+                        image: NetworkImage(list!.data![index].urlCover!))),
               ),
               Expanded(
                 flex: 3,
@@ -315,7 +388,7 @@ class _HomeState extends State<Home> {
                       Text.rich(TextSpan(
                         children: [
                           TextSpan(
-                            text: "Kimia",
+                            text: list.data![index].courseName,
                             style: GoogleFonts.poppins(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
@@ -323,7 +396,8 @@ class _HomeState extends State<Home> {
                             ),
                           ),
                           TextSpan(
-                            text: "\n0/50 Paket latihan soal",
+                            text:
+                                "\n${list.data![index].jumlahDone}/${list.data![index].jumlahMateri} Paket latihan soal",
                             style: GoogleFonts.poppins(
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
@@ -335,11 +409,11 @@ class _HomeState extends State<Home> {
                       const SizedBox(
                         height: 10,
                       ),
-                      const LinearProgressIndicator(
+                      LinearProgressIndicator(
                         minHeight: 5,
-                        color: Color(0xff3A7FD5),
-                        backgroundColor: Color(0xffF0F0F0),
-                        value: 0.5,
+                        color: const Color(0xff3A7FD5),
+                        backgroundColor: const Color(0xffF0F0F0),
+                        value: list.data![index].progress!.toDouble(),
                       )
                     ],
                   ),
@@ -350,7 +424,7 @@ class _HomeState extends State<Home> {
         ),
       );
 
-  Widget buildNews() => Container(
+  Widget buildNews(BannerList? list) => Container(
         height: 200,
         padding: const EdgeInsets.all(10),
         child: Column(
@@ -364,26 +438,28 @@ class _HomeState extends State<Home> {
               ),
             ),
             Flexible(
-              child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  // padding: const EdgeInsets.all(8),
-                  itemCount: 3,
-                  separatorBuilder: (context, index) {
-                    return const SizedBox(width: 20);
-                  },
-                  itemBuilder: (context, index) {
-                    return buildCard2(index);
-                  }),
+              child: list == null
+                  ? const Center(child: CircularProgressIndicator())
+                  : ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: list.data == null ? 0 : list.data!.length,
+                      separatorBuilder: (context, index) {
+                        return const SizedBox(width: 20);
+                      },
+                      itemBuilder: (context, index) {
+                        return buildCard2(index: index, list: list);
+                      }),
             ),
           ],
         ),
       );
 
-  Widget buildCard2(int index) => Container(
+  Widget buildCard2({required int index, required BannerList? list}) =>
+      Container(
         width: 280,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.contain,
-                image: AssetImage("assets/images/img_banner.png"))),
+                image: NetworkImage(list!.data![index].eventImage!))),
       );
 }

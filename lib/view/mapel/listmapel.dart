@@ -3,6 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:edspertidapp/controller/state_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/mata_pelajaran_list.dart';
+import '../../repository/latihan_soal_api.dart';
+
 class ListMapel extends StatefulWidget {
   const ListMapel({Key? key}) : super(key: key);
 
@@ -11,6 +14,27 @@ class ListMapel extends StatefulWidget {
 }
 
 class _ListMapelState extends State<ListMapel> {
+  MataPelajaranList? mapelList;
+
+  @override
+  void initState() {
+    super.initState();
+    getMapel();
+  }
+
+  Future<void> getMapel() async {
+    final response =
+        await LatihanSoalApi().getMataPelajaran("alitopan@widyaedu.com", "IPS");
+    //? Data diambil dari Firebase
+    if (response != null) {
+      print(response);
+      mapelList = MataPelajaranList.fromJson(response);
+      setState(() {});
+    } else {
+      print("Terjadi kesalahan saat pengambilan data Mata Pelajaran!");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,36 +52,39 @@ class _ListMapelState extends State<ListMapel> {
           color: Colors.white,
           onPressed: () {
             Navigator.pop(context);
-            ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Dari Pilih Pelajaran!")));
           },
         ),
       ),
-      body: ListView.separated(
-          padding: const EdgeInsets.all(20),
-          itemCount: 10,
-          separatorBuilder: (context, index) {
-            return const SizedBox(height: 20);
-          },
-          itemBuilder: (context, index) {
-            return buildCard(index);
-          }),
+      body: mapelList == null
+          ? const Center(child: CircularProgressIndicator())
+          : ListView.separated(
+              padding: const EdgeInsets.all(20),
+              itemCount: mapelList!.data == null ? 0 : mapelList!.data!.length,
+              separatorBuilder: (context, index) {
+                return const SizedBox(height: 20);
+              },
+              itemBuilder: (context, index) {
+                return buildCard(index: index, list: mapelList);
+              }),
     );
   }
 
-  Widget buildCard(int? i) => GestureDetector(
+  Widget buildCard({required int index, required MataPelajaranList? list}) =>
+      GestureDetector(
         onTap: () {
-          i != null
+          list!.data![index].courseId != null
               ? () {
-                  context.read<StateProvider>().getIndex(i);
+                  context
+                      .read<StateProvider>()
+                      .getCourseId(list.data![index].courseId!);
                   Navigator.pushNamed(
                     context,
                     "/paketsoal",
                   );
                   print(
-                      "${Provider.of<StateProvider>(context, listen: false).index}");
+                      "${Provider.of<StateProvider>(context, listen: false).courseId}");
                 }()
-              : print(i);
+              : print(int.parse(list.data![index].courseId!));
         },
         child: Container(
           height: 100,
@@ -77,9 +104,9 @@ class _ListMapelState extends State<ListMapel> {
                     color: const Color(0xffF3F7F8),
                     // color: Colors.grey,
                     borderRadius: BorderRadius.circular(10),
-                    image: const DecorationImage(
-                        scale: 2,
-                        image: AssetImage("assets/icons/ic_kimia.png"))),
+                    image: DecorationImage(
+                        scale: 1.5,
+                        image: NetworkImage(list!.data![index].urlCover!))),
               ),
               Expanded(
                 flex: 3,
@@ -92,7 +119,7 @@ class _ListMapelState extends State<ListMapel> {
                       Text.rich(TextSpan(
                         children: [
                           TextSpan(
-                            text: "Kimia",
+                            text: list.data![index].courseName,
                             style: GoogleFonts.poppins(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
@@ -100,7 +127,8 @@ class _ListMapelState extends State<ListMapel> {
                             ),
                           ),
                           TextSpan(
-                            text: "\n0/50 Paket latihan soal",
+                            text:
+                                "\n${list.data![index].jumlahDone}/${list.data![index].jumlahMateri} Paket latihan soal",
                             style: GoogleFonts.poppins(
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
@@ -112,11 +140,11 @@ class _ListMapelState extends State<ListMapel> {
                       const SizedBox(
                         height: 10,
                       ),
-                      const LinearProgressIndicator(
+                      LinearProgressIndicator(
                         minHeight: 5,
-                        color: Color(0xff3A7FD5),
-                        backgroundColor: Color(0xffF0F0F0),
-                        value: 0.5,
+                        color: const Color(0xff3A7FD5),
+                        backgroundColor: const Color(0xffF0F0F0),
+                        value: list.data![index].progress!.toDouble(),
                       )
                     ],
                   ),

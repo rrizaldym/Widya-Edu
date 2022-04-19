@@ -1,65 +1,41 @@
 import 'package:edspertidapp/controller/state_provider.dart';
-import 'package:edspertidapp/models/sub_materi_list.dart';
+import 'package:edspertidapp/models/paket_latihan_soal.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-import '../../models/materi.dart';
 import '../../repository/latihan_soal_api.dart';
 
-class PaketSoal extends StatefulWidget {
-  const PaketSoal({
-    Key? key,
-  }) : super(key: key);
+class PaketLatihanSoal extends StatefulWidget {
+  const PaketLatihanSoal({Key? key}) : super(key: key);
 
   @override
-  State<PaketSoal> createState() => _PaketSoalState();
+  State<PaketLatihanSoal> createState() => _PaketLatihanSoalState();
 }
 
-class _PaketSoalState extends State<PaketSoal> {
+class _PaketLatihanSoalState extends State<PaketLatihanSoal> {
   bool isLoading = true;
 
-  Materi? materi;
-  SubMateriList? subMateriList;
+  PaketLatihanSoalList? paketLatsolList;
 
   @override
   void initState() {
     super.initState();
-    getMateri();
+    getPaketLatsolList();
   }
 
-  Future<void> getMateri() async {
-    final response = await LatihanSoalApi().getMateri(
+  Future<void> getPaketLatsolList() async {
+    final response = await LatihanSoalApi().getPaketLatihanSoalList(
         //? Data diambil dari Firebase
         "alitopan@widyaedu.com",
-        Provider.of<StateProvider>(context, listen: false).courseId);
+        Provider.of<StateProvider>(context, listen: false).subCourseContentId);
     if (response != null) {
       print(response);
-      materi = Materi.fromJson(response);
-      setState(() {});
-      context.read<StateProvider>().getCourseContentId(
-          materi!.data!.listCourseContent![0].courseContentId!);
-      context
-          .read<StateProvider>()
-          .getCourseName(materi!.data!.listCourseContent![0].courseName!);
-      getSubMateri();
-    } else {
-      print("Terjadi kesalahan saat pengambilan data Materi!");
-    }
-  }
-
-  Future<void> getSubMateri() async {
-    final response = await LatihanSoalApi().getSubMateri(
-        //? Data diambil dari Firebase
-        "alitopan@widyaedu.com",
-        Provider.of<StateProvider>(context, listen: false).courseContentId);
-    if (response != null) {
-      print(response);
-      subMateriList = SubMateriList.fromJson(response);
+      paketLatsolList = PaketLatihanSoalList.fromJson(response);
       isLoading = false;
       setState(() {});
     } else {
-      print("Terjadi kesalahan saat pengambilan data Sub Materi!");
+      print("Terjadi kesalahan saat pengambilan data Paket Latihan Soal List!");
     }
   }
 
@@ -106,7 +82,7 @@ class _PaketSoalState extends State<PaketSoal> {
                   Expanded(
                     child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: subMateriList!.status == 0
+                        child: paketLatsolList!.status == 0
                             ? buildError()
                             : GridView.builder(
                                 gridDelegate:
@@ -115,12 +91,12 @@ class _PaketSoalState extends State<PaketSoal> {
                                         crossAxisSpacing: 10,
                                         mainAxisSpacing: 10,
                                         childAspectRatio: 150 / 100),
-                                itemCount: subMateriList!.data == null
+                                itemCount: paketLatsolList!.data == null
                                     ? 0
-                                    : subMateriList!.data!.length,
+                                    : paketLatsolList!.data!.length,
                                 itemBuilder: (context, index) {
                                   return buildCard(
-                                      index: index, list: subMateriList!);
+                                      index: index, list: paketLatsolList!);
                                 },
                               )),
                   )
@@ -132,15 +108,12 @@ class _PaketSoalState extends State<PaketSoal> {
 
   Widget buildCard({
     required int index,
-    required SubMateriList list,
+    required PaketLatihanSoalList list,
   }) =>
       GestureDetector(
         onTap: () {
-          context
-              .read<StateProvider>()
-              .getSubCourseContentId(list.data![index].subCourseContentId!);
-          Navigator.pushNamed(context, "/paketlatsol");
-          print(list.data![index].subCourseContentId!);
+          Navigator.pushNamed(context, "/latihansoal");
+          print(index);
         },
         child: Container(
           height: 100,
@@ -160,16 +133,15 @@ class _PaketSoalState extends State<PaketSoal> {
                 height: 36,
                 decoration: BoxDecoration(
                     color: const Color(0xffF3F7F8),
-                    // color: Colors.grey,
                     borderRadius: BorderRadius.circular(10),
-                    image: const DecorationImage(
-                        scale: 4,
-                        image: AssetImage("assets/icons/ic_note.png"))),
+                    image: DecorationImage(
+                        scale: 3,
+                        image: NetworkImage(list.data![index].icon!))),
               ),
               Text.rich(TextSpan(
                 children: [
                   TextSpan(
-                    text: list.data![index].subCourseContentName,
+                    text: list.data![index].exerciseTitle,
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -178,7 +150,7 @@ class _PaketSoalState extends State<PaketSoal> {
                   ),
                   TextSpan(
                     text:
-                        "\n${list.data![index].jumlahDone}/${list.data![index].jumlahPaket} Soal",
+                        "\n${list.data![index].jumlahDone}/${list.data![index].jumlahSoal} Soal",
                     style: GoogleFonts.poppins(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,

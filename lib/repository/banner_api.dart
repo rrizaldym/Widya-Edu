@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/services.dart';
 
 import '../constant/api_url.dart';
 
-class AuthAPi {
+class BannerApi {
   Dio apiNormal() {
     BaseOptions dioOption = BaseOptions(
         baseUrl: ApiUrl.baseUrl,
@@ -26,29 +27,10 @@ class AuthAPi {
     }
   }
 
-  _postRequest({required String endpoint, body}) async {
-    try {
-      final dio = apiNormal();
-      final res = await dio.post(endpoint, data: body);
-      return res.data;
-    } on DioError catch (e) {
-      if (e.type == DioErrorType.connectTimeout) {
-        print("timeout");
-      }
-    } catch (e) {
-      print("error");
-    }
-  }
-
-  // Future<Map<String, dynamic>?> getUserbyEmail(email) {
-  getUserbyEmail(email) {
-    final result = _getRequest(endpoint: ApiUrl.users, param: {"email": email});
+  getBanner({limit}) {
+    final result = _getRequest(endpoint: ApiUrl.banner, param: {
+      "limit": limit,
+    });
     return result;
   }
-
-  postRegisterUser(body)  {
-    final result = _postRequest(endpoint: ApiUrl.users, body: body);
-    return result;
-  }
-
 }
