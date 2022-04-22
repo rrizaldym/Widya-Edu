@@ -3,6 +3,7 @@ import 'package:edspertidapp/view/auth/login.dart';
 import 'package:edspertidapp/view/auth/register.dart';
 import 'package:edspertidapp/view/home.dart';
 import 'package:edspertidapp/view/latihansoal/latihansoal.dart';
+import 'package:edspertidapp/view/latihansoal/result.dart';
 import 'package:edspertidapp/view/mapel/paketlatsol.dart';
 import 'package:edspertidapp/view/mapel/paketsoal.dart';
 import 'package:edspertidapp/view/profile/profile.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
         '/paketsoal': (context) => const PaketSoal(),
         '/paketlatsol': (context) => const PaketLatihanSoal(),
         '/latihansoal': (context) => const LatihanSoal(),
+        '/result': (context) => const Result(),
       },
       theme: ThemeData(
         scaffoldBackgroundColor: const Color(0xffE5E5E5),

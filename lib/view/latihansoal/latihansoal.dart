@@ -1,5 +1,6 @@
 import 'package:edspertidapp/models/input_jawaban.dart';
 import 'package:edspertidapp/models/kerjakan_soal.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -201,6 +202,40 @@ class _LatihanSoalState extends State<LatihanSoal>
     );
   }
 
+  Map<int, String> answerMap = {};
+  ElevatedButton builOptiondButton({
+    required int? index,
+    required String option,
+    required String? optionText,
+    required String? optionImg,
+  }) {
+    return ElevatedButton(
+      onPressed: () {
+        answerMap[index!] = option;
+        setState(() {});
+      },
+      child: Align(
+          alignment: Alignment.centerLeft,
+          child: optionImg != null
+              ? Image.network(optionImg)
+              : Text(
+                  "$option. $optionText",
+                  style: GoogleFonts.poppins(
+                      color: Colors.black,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400),
+                )),
+      style: ElevatedButton.styleFrom(
+        fixedSize: Size(MediaQuery.of(context).size.width, 50),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        primary: answerMap[index] == option
+            ? const Color(0xff3A7FD5).withOpacity(0.7)
+            : Colors.white,
+      ),
+    );
+  }
+
   Align buildButton(int index, BuildContext context) {
     return Align(
       alignment: Alignment.centerRight,
@@ -212,6 +247,7 @@ class _LatihanSoalState extends State<LatihanSoal>
                 Provider.of<StateProvider>(context, listen: false).exerciseId;
             List<String> idSoal = [];
             List<String> answer = [];
+            int result = 0;
 
             for (var i = 0; i < soal!.data!.length; i++) {
               final element = soal!.data![i];
@@ -232,9 +268,14 @@ class _LatihanSoalState extends State<LatihanSoal>
             answerMap.forEach((key, value) {
               idSoal.add("$key");
               answer.add(value);
+              if (value != "X") {
+                result++;
+              }
             });
+
             print(idSoal);
             print(answer);
+            print(result * 100);
 
             final payload = {
               "user_email": email,
@@ -244,102 +285,8 @@ class _LatihanSoalState extends State<LatihanSoal>
             };
             print(payload);
 
-            showModalBottomSheet(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                context: context,
-                builder: (BuildContext context) {
-                  return Container(
-                      height: MediaQuery.of(context).size.height * 0.5,
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Container(
-                            height: 5,
-                            width: 90,
-                            color: const Color(0xffC4C4C4),
-                          ),
-                          ClipRRect(
-                            child: Image.asset("assets/images/img_success.png"),
-                          ),
-                          Text.rich(
-                            TextSpan(children: [
-                              TextSpan(
-                                  text: "Kumpulkan latihan soal sekarang?",
-                                  style: GoogleFonts.poppins(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black)),
-                              TextSpan(
-                                  text: "\nBoleh langsung kumpulin dong",
-                                  style: GoogleFonts.poppins(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600,
-                                      color: const Color(0xff9C9C9C)))
-                            ]),
-                            textAlign: TextAlign.center,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: 0,
-                                    fixedSize: Size(
-                                        MediaQuery.of(context).size.width *
-                                            0.35,
-                                        30),
-                                    side: const BorderSide(
-                                        color: Color(0xff3A7FD5)),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8)),
-                                    primary: Colors.white,
-                                  ),
-                                  child: Text("Nanti dulu",
-                                      style: GoogleFonts.poppins(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                          color: const Color(0xff3A7FD5)))),
-                              ElevatedButton(
-                                  onPressed: () async {
-                                    final result = await LatihanSoalApi()
-                                        .postInputJawaban(payload);
-                                    if (result != null) {
-                                      final data =
-                                          InputJawaban.fromJson(result);
-                                      if (data.status == 1) {
-                                        print(data);
-                                      }
-                                    }
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                      elevation: 0,
-                                      fixedSize: Size(
-                                          MediaQuery.of(context).size.width *
-                                              0.35,
-                                          30),
-                                      side: const BorderSide(
-                                          color: Color(0xff3A7FD5)),
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8)),
-                                      primary: const Color(0xff3A7FD5)),
-                                  child: Text("Ya",
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      )))
-                            ],
-                          ),
-                        ],
-                      ));
-                });
+            await buildshowModalBottomSheet(
+                context, payload, "${result * 100}");
           } else {
             _controller!.animateTo(index + 1);
           }
@@ -355,37 +302,99 @@ class _LatihanSoalState extends State<LatihanSoal>
     );
   }
 
-  Map<int, String> answerMap = {};
-  ElevatedButton builOptiondButton({
-    required int? index,
-    required String option,
-    required String? optionText,
-    required String? optionImg,
-  }) {
-    return ElevatedButton(
-      onPressed: () {
-        answerMap[index!] = option;
-        setState(() {});
-      },
-      child: Align(
-          alignment: Alignment.bottomLeft,
-          child: optionImg != null
-              ? Image.network(optionImg)
-              : Text(
-                  "$option. $optionText",
-                  style: GoogleFonts.poppins(
-                      color: Colors.black,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400),
-                )),
-      style: ElevatedButton.styleFrom(
-        fixedSize: Size(MediaQuery.of(context).size.width, 50),
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        primary: answerMap[index] == option
-            ? const Color(0xff3A7FD5).withOpacity(0.7)
-            : Colors.white,
-      ),
-    );
+  buildshowModalBottomSheet(
+      BuildContext context, Map<String, Object> payload, String? result) async {
+    showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+              height: MediaQuery.of(context).size.height * 0.5,
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    height: 5,
+                    width: 90,
+                    color: const Color(0xffC4C4C4),
+                  ),
+                  ClipRRect(
+                    child: Image.asset("assets/images/img_success.png"),
+                  ),
+                  Text.rich(
+                    TextSpan(children: [
+                      TextSpan(
+                          text: "Kumpulkan latihan soal sekarang?",
+                          style: GoogleFonts.poppins(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black)),
+                      TextSpan(
+                          text: "\nBoleh langsung kumpulin dong",
+                          style: GoogleFonts.poppins(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xff9C9C9C)))
+                    ]),
+                    textAlign: TextAlign.center,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            fixedSize: Size(
+                                MediaQuery.of(context).size.width * 0.35, 30),
+                            side: const BorderSide(color: Color(0xff3A7FD5)),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8)),
+                            primary: Colors.white,
+                          ),
+                          child: Text("Nanti dulu",
+                              style: GoogleFonts.poppins(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: const Color(0xff3A7FD5)))),
+                      ElevatedButton(
+                          onPressed: () async {
+                            final response = await LatihanSoalApi()
+                                .postInputJawaban(payload);
+                            if (response != null) {
+                              final data = InputJawaban.fromJson(response);
+                              if (data.status == 1) {
+                                print(data);
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                                Navigator.pushNamed(context, "/result",
+                                    arguments: {"result": result});
+                              }
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                              elevation: 0,
+                              fixedSize: Size(
+                                  MediaQuery.of(context).size.width * 0.35, 30),
+                              side: const BorderSide(color: Color(0xff3A7FD5)),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
+                              primary: const Color(0xff3A7FD5)),
+                          child: Text("Ya",
+                              style: GoogleFonts.poppins(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              )))
+                    ],
+                  ),
+                ],
+              ));
+        });
   }
 }
