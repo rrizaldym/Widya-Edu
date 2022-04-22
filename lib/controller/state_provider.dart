@@ -33,6 +33,14 @@ class StateProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  String? _exerciseId;
+  String get exerciseId => _exerciseId!;
+
+  void getExerciseId(String context) {
+    _exerciseId = context;
+    notifyListeners();
+  }
+
   String? _email;
   String? _name;
   String? _gender;

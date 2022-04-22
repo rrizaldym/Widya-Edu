@@ -28,7 +28,7 @@ class _PaketLatihanSoalState extends State<PaketLatihanSoal> {
     final response = await LatihanSoalApi().getPaketLatihanSoalList(
         //? Data diambil dari Firebase
         "alitopan@widyaedu.com",
-        Provider.of<StateProvider>(context, listen: false).subCourseContentId);
+        Provider.of<StateProvider>(context, listen: false).courseId);
     if (response != null) {
       print(response);
       paketLatsolList = PaketLatihanSoalList.fromJson(response);
@@ -112,12 +112,14 @@ class _PaketLatihanSoalState extends State<PaketLatihanSoal> {
   }) =>
       GestureDetector(
         onTap: () {
+          context
+              .read<StateProvider>()
+              .getExerciseId(list.data![index].exerciseId!);
           Navigator.pushNamed(context, "/latihansoal");
-          print(index);
+          print(Provider.of<StateProvider>(context, listen: false).exerciseId);
         },
         child: Container(
           height: 100,
-          // width: 150,
           width: MediaQuery.of(context).size.width * 0.4,
           padding: const EdgeInsets.symmetric(horizontal: 15),
           decoration: BoxDecoration(

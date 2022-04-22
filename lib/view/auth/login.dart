@@ -6,7 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../models/data_by_user_email.dart';
+import '../../models/data_by_user_email.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);

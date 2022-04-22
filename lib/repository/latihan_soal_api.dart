@@ -26,6 +26,20 @@ class LatihanSoalApi {
     }
   }
 
+  _postRequest({required String endpoint, body}) async {
+    try {
+      final dio = apiNormal();
+      final res = await dio.post(endpoint, data: body);
+      return res.data;
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.connectTimeout) {
+        print("timeout");
+      }
+    } catch (e) {
+      print("error");
+    }
+  }
+
   getMataPelajaran(email, major) {
     final result = _getRequest(
         endpoint: ApiUrl.mataPelajaran,
@@ -47,11 +61,22 @@ class LatihanSoalApi {
     return result;
   }
 
-  getPaketLatihanSoalList(email, subCourseContentId) {
-    final result = _getRequest(endpoint: ApiUrl.latSoal, param: {
-      "sub_course_content_id": subCourseContentId,
-      "user_email": email
-    });
+  getPaketLatihanSoalList(email, courseId) {
+    final result = _getRequest(
+        endpoint: ApiUrl.paketLatsolList,
+        param: {"course_id": courseId, "user_email": email});
+    return result;
+  }
+
+  postKerjakan(email, exerciseId) {
+    final result = _postRequest(
+        endpoint: ApiUrl.latSoal,
+        body: {"exercise_id": exerciseId, "user_email": email});
+    return result;
+  }
+
+  postInputJawaban(payload) {
+    final result = _postRequest(endpoint: ApiUrl.inputJawaban, body: payload);
     return result;
   }
 }

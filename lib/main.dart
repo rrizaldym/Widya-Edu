@@ -1,4 +1,6 @@
 import 'package:edspertidapp/controller/state_provider.dart';
+import 'package:edspertidapp/view/auth/login.dart';
+import 'package:edspertidapp/view/auth/register.dart';
 import 'package:edspertidapp/view/home.dart';
 import 'package:edspertidapp/view/latihansoal/latihansoal.dart';
 import 'package:edspertidapp/view/mapel/paketlatsol.dart';
@@ -7,8 +9,6 @@ import 'package:edspertidapp/view/profile/profile.dart';
 import 'package:edspertidapp/view/profile/setting.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:edspertidapp/auth/login.dart';
-import 'package:edspertidapp/auth/register.dart';
 import 'package:edspertidapp/view/mapel/listmapel.dart';
 import 'package:provider/provider.dart';
 
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/latihansoal',
+      initialRoute: '/home',
       routes: {
         '/login': (context) => const Login(),
         '/register': (context) => const Register(),
@@ -46,7 +46,6 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xffE5E5E5),
         appBarTheme: const AppBarTheme(color: Color(0xff3A7FD5)),
       ),
-      // home: const Login(),
     );
   }
 }

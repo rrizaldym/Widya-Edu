@@ -11,19 +11,17 @@ environment:
   sdk: ">=2.16.2 <3.0.0"
 
 dependencies:
-  flutter:
-    sdk: flutter
+  cached_network_image: ^3.2.0
   cupertino_icons: ^1.0.2
-
+  dio: ^4.0.6
   firebase_auth: ^3.3.13
   firebase_core: ^1.14.0
-  google_sign_in: ^5.2.4
-  dio: ^4.0.6
+  flutter:
+    sdk: flutter
   get: ^4.6.1
-  provider: ^6.0.2
-
   google_fonts: ^2.3.1
-  cached_network_image: ^3.2.0
+  google_sign_in: ^5.2.4
+  provider: ^6.0.2
 
 dev_dependencies:
   flutter_lints: ^1.0.0

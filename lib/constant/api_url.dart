@@ -5,5 +5,7 @@ class ApiUrl {
   static String mataPelajaran = "exercise/data_course";
   static String materi = "exercise/data_course_content";
   static String subMateri = "exercise/data_sub_course_content";
-  static String latSoal = "exercise/data_exercise";
+  static String paketLatsolList = "exercise/data_exercise";
+  static String latSoal = "exercise/kerjakan";
+  static String inputJawaban = "exercise/input_jawaban";
 }

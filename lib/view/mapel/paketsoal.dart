@@ -136,11 +136,11 @@ class _PaketSoalState extends State<PaketSoal> {
   }) =>
       GestureDetector(
         onTap: () {
-          context
-              .read<StateProvider>()
-              .getSubCourseContentId(list.data![index].subCourseContentId!);
+          // context
+          //     .read<StateProvider>()
+          //     .getSubCourseContentId(list.data![index].subCourseContentId!);
           Navigator.pushNamed(context, "/paketlatsol");
-          print(list.data![index].subCourseContentId!);
+          print(list.data![index].courseId!);
         },
         child: Container(
           height: 100,
